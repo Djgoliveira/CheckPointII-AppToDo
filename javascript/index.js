@@ -1,25 +1,20 @@
-const email = document.getElementById("inputEmail");
-const senha = document.getElementById("inputPassword");
-
-const smalEmail = document.getElementById("valEmail");
-const smalSenha = document.getElementById("valSenha");
-const smalBtn = document.getElementById("valBtn");
-
-const btnSubmit = document.getElementById("btnSumit");
+let email = document.getElementById("inputEmail");
+let password = document.getElementById("inputPassword");
+let smalEmail = document.getElementById("valEmail");
+let smalSenha = document.getElementById("valSenha");
+let smalBtn = document.getElementById("valBtn");
+let btnSubmit = document.getElementById("btnSumit");
 btnSubmit.style.backgroundColor= "gray";
 
+let form = document.querySelector("form");
 
-const form = document.querySelector("form");
-
-form.addEventListener("submit", (e)=>{   
-
-    if (email.value == "" && senha.value == ""){        
+form.addEventListener("submit", ()=>{ 
+    if (email.value == "" && password.value == ""){        
         smalBtn.textContent="Você precisa preencher todos os campos!";
-        smalBtn.style.color="red"; 
-
-    }else if ( validatorEmail(email.value)===true && validatorSenha(senha.value)=== true){
+        smalBtn.style.color="red";
+    }else if ( validatorEmail(email.value)===true && validatorSenha(password.value)=== true){
     console.log(email.value);
-    console.log(senha.value); 
+    console.log(password.value); 
     smalEmail.textContent="";
     smalSenha.textContent="";
     smalBtn.textContent="";
@@ -27,7 +22,7 @@ form.addEventListener("submit", (e)=>{
     }else{
         console.log("Requisição não atendida");
     }
-    e.preventDefault();
+    
 });
 
 //função para validação do email ele buscar o input do email lá em cima e faz o teste na linha 4 depois vai para a linha 28 e se a função for igual ao input.value da ok senão da erro
@@ -42,13 +37,8 @@ email.addEventListener("keyup",()=>{
     }
 })
 
-function validatorEmail(validarEmail){
-    let emailExpress = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
-    return emailExpress.test(validarEmail);
-}
-
-senha.addEventListener("keyup",()=>{
-    if(validatorSenha(senha.value)!==true){
+password.addEventListener("keyup",()=>{
+    if(validatorSenha(password.value)!==true){
         smalSenha.textContent = "O formato da senha deve ter de 6 até 16 caracteres, deve possuir !@#$%^&*4 ";
         smalSenha.style.color="red"; 
     }else{
@@ -58,8 +48,5 @@ senha.addEventListener("keyup",()=>{
     }
 })
 
-function validatorSenha(validarSenha){
-    let senhaExpress = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-    return senhaExpress.test(validarSenha);
-}
+
 

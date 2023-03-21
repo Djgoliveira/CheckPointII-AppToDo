@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="styles/acesso.css">
 
   <!-- ---------------------- lógica aplicada no registro -------------------- -->
-  <script src="/scripts/utils.js"></script>
-  <script src="/scripts/signup.js"></script>
+  <script src="./javascript/signup.js" defer></script>
+  <script src="./javascript/funcoes.js" defer></script>
 
 </head>
 
@@ -29,26 +29,32 @@
 
       <label>
         Nome:
-        <input type="text">
+        <input id="nome" type="text" required>
+        <small id="smallNome"></small>
       </label>
       <label>
         Sobrenome:
-        <input type="text">
+        <input id="sobreNome" type="text" required>
+        <small id="smallSobreNome"></small>
       </label>
       <label>
         Email:
-        <input type="email">
+        <input id="email" type="email" required>
+        <small id="smallEmail"></small>
       </label>
       <label>
         Senha:
-        <input type="password">
+        <input id="password" type="password" class="senha" required >
+        <small id="smallPassword"></small>
       </label>
       <label>
         Repetir senha:
-        <input type="password">
+        <input  id="repetirPassword" type="password" class="senha" required>
+        <small id="smallRepetirPassword"></small>
       </label>
 
-      <button>Criar conta</button>
+      <button id="criarConta" type="submit" >Criar conta</button>
+      <small id="smallSubmit"></small>
 
     </form>
     <div class="ingressar">
