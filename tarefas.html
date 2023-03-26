@@ -20,7 +20,7 @@
   <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
 
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="./javascript/signup.js" defer></script>
+  
   <script src="./javascript/funcoes.js" defer></script>
   <script src="./javascript/tarefas.js" defer></script>
 
@@ -46,14 +46,14 @@
   <form class="nova-tarefa">
     <div class="not-done "></div>
     <input id="novaTarefa" type="text" placeholder="Nova tarefa">
-    <button type="submit">
+    <button type="button" id="submitTarefas">
       <img src="./assets/plus.png" alt="Adicionar uma nova tarefa">
     </button>
   </form>
 
 
   <ul class="tarefas-pendentes">
-    <div>
+    <div id="cards">
     <!-- <div id="skeleton"> -->
       <li class="tarefa">
         <div class="not-done"></div>

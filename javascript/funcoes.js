@@ -20,13 +20,23 @@ function criarNovaConta(){
     //window.location.reload(true);
 }
 
+function verificarCadastro(){
+    if(email.value != localStorage.email){
+        window.location.href='./signup.html';
+        alert("Não encontramos seu cadastro, clique em Ok para se cadastrar!");
+    }else{
+        login();
+    }    
+}
+
 function login(){
     if(email.value == localStorage.email && password.value == localStorage.password){
         window.location.href='./tarefas.html';
-        alert("Login Ok!");
+        alert(`Login Ok, seja Bem vindo ${localStorage.nome}`);
     }else {
         window.location.href='./index.html';   
-        alert("Senha invalida!"); 
-            
+        alert("Senha invalida!");             
     }
 }
+
+    
