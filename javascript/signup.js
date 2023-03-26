@@ -100,11 +100,15 @@ repetirPassword.addEventListener("keyup",()=>{
 
 //CAPTURAR OS DADOS E SALVAR NO LOCALSTORAGE
 form.addEventListener("submit", function(){
-  localStorage.setItem("nome", JSON.stringify(nome.value));
-  localStorage.setItem("sobreNome", JSON.stringify(sobreNome.value));
-  localStorage.setItem("email", JSON.stringify(email.value));
-  localStorage.setItem("password", JSON.stringify(password.value));  
-  //criarNovaConta();
+localStorage.nome = nome.value;
+localStorage.sobreNome = sobreNome.value;
+localStorage.email = email.value;
+localStorage.password = password.value;
+ // localStorage.setItem("nome", JSON.stringify(nome.value));
+  //localStorage.setItem("sobreNome", JSON.stringify(sobreNome.value));
+  //localStorage.setItem("email", JSON.stringify(email.value));
+  //localStorage.setItem("password", JSON.stringify(password.value));  
+criarNovaConta();
 });
 
 //CAPTURAR OS DADOS E SALVAR NO LOCALSTORAGE

@@ -9,22 +9,24 @@ function validatorSenha(password){
 }
 
 function criarNovaConta(){
-    if ( nome.addEventListener == true &&
-        sobreNome.addEventListener == true &&
-        email.addEventListener == true &&
-        password.addEventListener == true ){
+    if ( localStorage.nome == nome.value &&
+        localStorage.sobreNome == sobreNome.value &&
+       localStorage.email ==  email.value &&
+        localStorage.password ==password.value ){
             alert(`Sua conta foi criada com sucesso ${nome.value}`);
     }else{
         alert(`Erro ao criar sua conta ${nome.value} ${sobreNome.value}, por favor revise!`)
     }
-    window.location.reload(true);
+    //window.location.reload(true);
 }
 
 function login(){
-    if(localStorage.getItem("email") == JSON.parse(email.value) && localStorage.getItem("senha") == JSON.parse(password.value)){
+    if(email.value == localStorage.email && password.value == localStorage.password){
+        window.location.href='./tarefas.html';
         alert("Login Ok!");
-        window.location.href='https:www.google.com.br';
     }else {
-        alert("Senha invalida!");        
+        window.location.href='./index.html';   
+        alert("Senha invalida!"); 
+            
     }
 }
