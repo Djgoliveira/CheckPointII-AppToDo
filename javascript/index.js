@@ -47,6 +47,3 @@ password.addEventListener("keyup",()=>{
         btnSubmit.style.backgroundColor= "";
     }
 })
-
-
-
