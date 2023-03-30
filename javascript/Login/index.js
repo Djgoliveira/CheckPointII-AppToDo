@@ -9,6 +9,7 @@ let btnSubmit = document.querySelector("#btnSubmit");
 
 // Desabilitando o botão de submit com id #btnSubmit
 btnSubmit.disabled = true;
+btnSubmit.style.backgroundColor= "gray";
 
 // Função que valida o email
 function validaEmail(email) {
@@ -60,6 +61,8 @@ password.addEventListener("keyup", () => {
     smalSenha.style.color = "green";
     if (validaEmail(email.value) === true) {
       btnSubmit.disabled = false;
+      btnSubmit.style.backgroundColor= "";
+      btnSubmit.textContent = "Acessar"
     }
   }
 });
