@@ -18,6 +18,55 @@ function validatorSenha(password){
     return validatorEmail(email.value) !== "" && validatorSenha(password.value) !== "";
   }
 
+  function validaCadastro() {
+    return nome.value !=="" && sobreNome.value !== "" && validatorEmail(email.value) !== "" && validatorSenha(password.value) !== "" ;
+  }
+
+  // Função apresentação para usuário formato alert caso API for true
+function loginSucesso(token) {
+    console.log(token);
+    sessionStorage.setItem("jwt", token.jwt)
+    alert(`Login efetuado com sucesso ! Seja bem Vindo`);
+    window.location.href ="tarefas.html";
+  
+  }  
+  // Função apresentação para usuário formato alert caso API for false
+  function loginErro(erro) {
+      console.log(erro);
+      if (erro.status == 400) {
+        alert("E-mail e/ou senha inválidos");      
+      }else if(erro.status == 404){
+        alert("Não foi encontrado seus dados na nossa base, cliquei em ok para ir para o cadastro"); 
+        window.location.href ="signup.html";
+      }
+  }
+
+  // Função apresentação para usuário formato alert caso API for true
+function cadastroSucesso(token, objetoCadastroUsuarioJson) {
+    console.log(token);
+    console.log(objetoCadastroUsuarioJson);
+    sessionStorage.setItem("jwt", token.jwt);
+    sessionStorage.setItem("firtname", objetoCadastroUsuarioJson.firstName);
+    sessionStorage.setItem("lastname", objetoCadastroUsuarioJson.lastName);
+    alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${objetoCadastroUsuarioJson.firstName} ${objetoCadastroUsuarioJson.lastName}`);
+    window.location.href ="index.html";
+  
+  }
+  
+  // Função apresentação para usuário formato alert caso API for false
+  function cadastroErro(erro,token) {
+      console.log(erro);
+      console.log(token);
+      if (erro.status == 400 || erro.status == 404) {
+        alert("Erro ao efetuar o seu cadastro, por favor revise!");
+        window.location.href ="signup.html";      
+      }
+        
+      
+  }
+  
+  
+
 function criarNovaConta(){
     if ( localStorage.nome == nome.value &&
         localStorage.sobreNome == sobreNome.value &&

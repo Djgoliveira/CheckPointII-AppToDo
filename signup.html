@@ -11,8 +11,9 @@
   <link rel="stylesheet" href="styles/acesso.css">
 
   <!-- ---------------------- lógica aplicada no registro -------------------- -->
-  <script src="./javascript/signup.js" defer></script>
-  <script src="./javascript/funcoes.js" defer></script>
+  <script src="./javascript/signup/signup.js" defer></script>
+  <script src="./javascript/funcoes/funcoes.js" defer></script>
+  <script src="./javascript/utils/utils.js" defer></script>
 
 </head>
 
@@ -44,12 +45,12 @@
       </label>
       <label>
         Senha:
-        <input id="password" type="password" class="senha" required >
+        <input id="password" type="password" class="senha" required maxlength="10" minlength="6">
         <small id="smallPassword"></small>
       </label>
       <label>
         Repetir senha:
-        <input  id="repetirPassword" type="password" class="senha" required>
+        <input  id="repetirPassword" type="password" class="senha" required maxlength="10" minlength="6">
         <small id="smallRepetirPassword"></small>
       </label>
 

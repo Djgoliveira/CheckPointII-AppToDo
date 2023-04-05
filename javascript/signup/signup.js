@@ -4,13 +4,93 @@ let sobreNome = document.getElementById("sobreNome");
 let email = document.getElementById("email");
 let password = document.getElementById("password");
 let repetirPassword = document.getElementById("repetirPassword");
+
 let criarConta = document.getElementById("criarConta");
-criarConta.style.background="gray";
+    criarConta.style.background="gray";
+    criarConta.setAttribute('disabled', true);
+
+
+criarConta.addEventListener('click', async function (e){
+let nomeValue = nome.value;
+let sobreNomeValue = sobreNome.value;
+let emailValue = email.value;
+let passwordValue = password.value
+
+
+    if(validaCadastro(nomeValue,sobreNomeValue, emailValue,passwordValue)){
+
+        e.preventDefault();
+
+        nomeValue = normalizaStringUsandoTrim(nomeValue);
+        sobreNomeValue = normalizaStringUsandoTrim(sobreNomeValue);
+        emailValue = normalizaStringUsandoTrim(emailValue);
+        passwordValue= normalizaStringUsandoTrim(passwordValue);
+
+        //Define um objeto JS para o usuário
+        let cadastroUsuario = {
+            firstName: "",
+            lastName: "",
+            email: "",
+            password: ""
+        }
+        //Define um objeto JSON para o usuário
+        let cadastroUsuarioJson = "";
+    
+        cadastroUsuario.firstName = nomeValue;
+        cadastroUsuario.lastName = sobreNomeValue;
+        cadastroUsuario.email = emailValue;
+        cadastroUsuario.password = passwordValue;
+
+        cadastroUsuarioJson = JSON.stringify(cadastroUsuario);
+        console.log(cadastroUsuarioJson);
+        
+
+        criarConta.removeAttribute('disabled');
+        cadastroAPI(cadastroUsuarioJson);
+    }else{
+        alert('Usuário não cadastrado!');
+    }
+});
+
+function cadastroAPI(cadastroUsuarioJson){
+    const configRequest = {
+        method: "POST",        
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: cadastroUsuarioJson
+    }
+
+    fetch(`https://todo-api.ctd.academy/v1/users`, configRequest)
+        .then(resultado => {
+
+            /* Verifica status de sucesso na execução da promisse */
+            if (resultado.status == 201 || resultado.status == 200) {
+                return resultado.json();
+            } else {
+                /* Caso o status não seja sucesso, retorna uma exceção com todo o objeto do "erro" */
+                throw resultado;
+            }
+        }
+        ).then(
+            resultado => {
+                //Chama função ao obter sucesso no login
+                cadastroSucesso(resultado);
+                
+            }
+        ).catch(
+            erro => {
+                //Chama função ao obter algum erro
+                cadastroErro(erro);
+                
+            }
+        );
+}
+
 
 //VALIDACOES DO FORM
-
 form.addEventListener("submit", ()=>{
-    if (nome.value =="" || sobreNome.value =="" || email.value =="" || password.value =="" ||repetirPassword.value =="") {
+    if (nome.value ==" " || sobreNome.value ==" " || email.value ==" " || password.value ==" " ||repetirPassword.value ==" ") {
         smallSubmit.textContent="Você precisa preencher todos os campos!";
         smallSubmit.style.color = "red";
         return false;
@@ -18,7 +98,6 @@ form.addEventListener("submit", ()=>{
         return true;
     }  
 })
-
 nome.addEventListener("keyup", ()=>{
     if(nome.value.length >2){
         smallNome.textContent="Ok!";
@@ -30,19 +109,17 @@ nome.addEventListener("keyup", ()=>{
         return false;
     }
 })
-
 sobreNome.addEventListener("keyup", ()=>{
     if(sobreNome.value.length >=3){
         smallSobreNome.textContent="Ok!";
         smallSobreNome.style.color="Green";
         return true;
     }else{
-        smallSobreNome.textContent="Sobre Nome Inválido";
+        smallSobreNome.textContent="Sobrenome Inválido";
         smallSobreNome.style.color="red";
         return false;
     }
 })
-
 email.addEventListener("keyup",()=>{
     if (validatorEmail(email.value)!==true){
         smallEmail.innerText = "Email Invalido, o formado do email deve ser: abc@abc.com";
@@ -54,10 +131,9 @@ email.addEventListener("keyup",()=>{
         return true; 
     }
 })
-
 password.addEventListener("keyup",()=>{
     if(validatorSenha(password.value)!==true){
-        smallPassword.textContent = "O formato da senha deve ter de 6 até 16 caracteres, deve possuir !@#$%^&*4 ";
+        smallPassword.textContent = "O formato da senha deve ter de 6 até 10 caracteres, deve possuir !@#$%^&*4, Letras Maiúsculas e minúsculas e números ";
         smallPassword.style.color="red"; 
         return false;
 
@@ -74,7 +150,6 @@ password.addEventListener("keyup",()=>{
         return true;
     }
 })
-
 repetirPassword.addEventListener("keyup",()=>{
     if(validatorSenha(repetirPassword.value)!==true){
         smallRepetirPassword.textContent = "O formato da senha deve ter de 6 até 16 caracteres, deve possuir !@#$%^&*4 ";
@@ -94,19 +169,7 @@ repetirPassword.addEventListener("keyup",()=>{
         smallPassword.innerText = "Ok!";
         smallPassword.style.color="green"; 
         criarConta.style.backgroundColor= "";
+        criarConta.removeAttribute('disabled');
         return true;
     }
 })
-
-//CAPTURAR OS DADOS E SALVAR NO LOCALSTORAGE
-form.addEventListener("submit", function(){
-localStorage.nome = nome.value;
-localStorage.sobreNome = sobreNome.value;
-localStorage.email = email.value;
-localStorage.password = password.value;
- // localStorage.setItem("nome", JSON.stringify(nome.value));
-  //localStorage.setItem("sobreNome", JSON.stringify(sobreNome.value));
-  //localStorage.setItem("email", JSON.stringify(email.value));
-  //localStorage.setItem("password", JSON.stringify(password.value));  
-criarNovaConta();
-});

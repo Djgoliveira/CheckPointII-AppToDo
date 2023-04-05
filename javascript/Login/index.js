@@ -10,8 +10,6 @@ let btnSubmit = document.querySelector("#btnSubmit");
 btnSubmit.disabled = true;
 btnSubmit.style.backgroundColor = "gray";
 
-
-
 // Evento para habilitar o botão de submit quando passar na verificação de email e manipulação do DOM
 email.addEventListener("keyup", () => {
   if (validatorEmail(email.value) !== true) {
@@ -95,22 +93,3 @@ btnSubmit.addEventListener("click", async (evento) => {
   }
 });
 
-// Função apresentação para usuário formato alert caso API for true
-function loginSucesso(token) {
-  console.log(token);
-  sessionStorage.setItem("jwt", token.jwt)
-  alert(`Login efetuado com sucesso ! Seja bem Vindo`);
-  window.location.href ="tarefas.html";
-
-}
-
-// Função apresentação para usuário formato alert caso API for false
-function loginErro(erro) {
-    console.log(erro);
-    if (erro.status == 400) {
-      alert("E-mail e/ou senha inválidos");      
-    }else if(erro.status == 404){
-      alert("Não foi encontrado seus dados na nossa base, cliquei em ok para ir para o cadastro"); 
-      window.location.href ="signup.html";
-    }
-}
