@@ -34,19 +34,19 @@ let passwordValue = password.value
             password: ""
         }
         //Define um objeto JSON para o usuário
-        let cadastroUsuarioJson = "";
+       // let cadastroUsuarioJson = "";
     
         cadastroUsuario.firstName = nomeValue;
         cadastroUsuario.lastName = sobreNomeValue;
         cadastroUsuario.email = emailValue;
         cadastroUsuario.password = passwordValue;
 
-        cadastroUsuarioJson = JSON.stringify(cadastroUsuario);
+        let cadastroUsuarioJson = JSON.stringify(cadastroUsuario);
         console.log(cadastroUsuarioJson);
         
 
         criarConta.removeAttribute('disabled');
-        cadastroAPI(cadastroUsuarioJson);
+        cadastroAPI(cadastroUsuario);
     }else{
         alert('Usuário não cadastrado!');
     }
@@ -54,37 +54,28 @@ let passwordValue = password.value
 
 function cadastroAPI(cadastroUsuarioJson){
     const configRequest = {
-        method: "POST",        
+        method: "POST",
+        body: cadastroUsuarioJson,
         headers: {
             'Content-type': 'application/json'
-        },
-        body: cadastroUsuarioJson
+        }
     }
 
-    fetch(`https://todo-api.ctd.academy/v1/users`, configRequest)
-        .then(resultado => {
-
-            /* Verifica status de sucesso na execução da promisse */
-            if (resultado.status == 201 || resultado.status == 200) {
-                return resultado.json();
+    fetch('https://todo-api.ctd.academy/v1/users', configRequest)
+        .then(resposta => {
+            if (resposta.status == 201 || resposta.status == 200) {
+                return resposta.json();
             } else {
-                /* Caso o status não seja sucesso, retorna uma exceção com todo o objeto do "erro" */
-                throw resultado;
+                throw resposta;
             }
-        }
-        ).then(
-            resultado => {
-                //Chama função ao obter sucesso no login
-                cadastroSucesso(resultado);
-                
-            }
-        ).catch(
-            erro => {
-                //Chama função ao obter algum erro
+        })
+        .then(data => {
+              cadastroSucesso(data);                
+            })
+            .catch(erro => {
                 cadastroErro(erro);
                 
-            }
-        );
+            });
 }
 
 
