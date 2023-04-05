@@ -4,9 +4,19 @@ function validatorEmail(email){
 }
 
 function validatorSenha(password){
-    let senhaExpress = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+    let senhaExpress = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,10}$/;
     return senhaExpress.test(password);
 }
+
+  // Função para normalizar a string 
+  function normalizaStringUsandoTrim(string) {
+    return string.trim();
+  }
+  
+  // Função para validar o login
+  function validaLogin() {
+    return validatorEmail(email.value) !== "" && validatorSenha(password.value) !== "";
+  }
 
 function criarNovaConta(){
     if ( localStorage.nome == nome.value &&

@@ -13,9 +13,8 @@
   <!-- ---------------------- lógica aplicada no login ----------------------- -->
   <script src="./javascript/Login/index.js" defer></script>
   <script src="./javascript/funcoes/funcoes.js" defer></script>
-  <script src="./javascript/signup/signup.js" defer></script>
   <script src="./javascript/utils/utils.js" defer></script>
-  <script src="./javascript/tarefas/tarefas.js"></script>
+
 
 </head>
 
@@ -37,12 +36,18 @@
       </label>
       <label>
         Senha:  
-        <input id="inputPassword" type="password">
-        <small id="valSenha"></small>
+        <input id="inputPassword" type="password" maxlength="10" minlength="6">
+        <small id="valSenha"></small><br>
+      <small id="valSenha1"></small><br>
+      <small id="valSenha2"></small><br>
+      <small id="valSenha3"></small><br>
+      <small id="valSenha4"></small>
+        
       </label>
 
-      <button id="btnSubmit" type="submit">Bloqueado</button>
+      <button id="btnSubmit" type="submit">Bloqueado</button><br>
       <small id="valBtn"></small>
+      
 
     </form>
     <div class="ingressar">

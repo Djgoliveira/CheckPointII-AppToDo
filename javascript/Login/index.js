@@ -1,5 +1,4 @@
 // captura dos elementos 
-
 let email = document.querySelector("#inputEmail");
 let password = document.querySelector("#inputPassword");
 let smalEmail = document.querySelector("#valEmail");
@@ -12,50 +11,48 @@ btnSubmit.disabled = true;
 btnSubmit.style.backgroundColor = "gray";
 
 
-// Função que valida o email
-function validaEmail(email) {
-  const emailValicao = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return emailValicao.test(email);
-}
-
-// Função para normalizar a string 
-function normalizaStringUsandoTrim(string) {
-  return string.trim();
-}
-
-// Função para validar o login
-function validaLogin() {
-  return validaEmail(email.value) && password.value !== "";
-}
 
 // Evento para habilitar o botão de submit quando passar na verificação de email e manipulação do DOM
 email.addEventListener("keyup", () => {
-  if (validaEmail(email.value) !== true) {
-    smalEmail.innerText =
-      "Email inválido. O formato do email deve ser: abc@abc.com";
+  if (validatorEmail(email.value) !== true) {
+    smalEmail.innerText ="Email inválido. O formato do email deve ser: abc@abc.com";
     smalEmail.style.color = "red";
     btnSubmit.disabled = true;
   } else {
-    smalEmail.innerText = "";
-      if (password.value !== "") {
-        btnSubmit.disabled = false;
-        smalEmail.innerText = "";
-        
-    }
+        smalEmail.innerText = "Ok"; 
+        smalEmail.style.color = "green";     
+        btnSubmit.disabled = false;           
   }
 });
 
 // Evento para habilitar o botão de submit quando quando passar na verificação de senha e manipulação do DOM
-password.addEventListener("keyup", () => {
-  if (password.value === "") {
+password.addEventListener("keyup", (e) => {
+  if (password.value == "" || password.value == " " || e.key == " " ) {
+    smalSenha.innerText ="O campo senha não pode ser vazio";
+    smalSenha.style.color = "red";
     btnSubmit.disabled = true;
-  } else {
-    smalSenha.innerText = "";
-    if (validaEmail(email.value) === true) {
-      btnSubmit.disabled = false;
-      btnSubmit.style.backgroundColor= "";
-      btnSubmit.textContent = "Acessar"
-    }
+} else if (validatorSenha(password.value) == false) {
+  smalSenha.innerText ="O campo senha precisa ter no máximo 10 caracteres";
+  valSenha1.innerText ="O campo senha precisa ter caracteres especiais";
+  valSenha2.innerText ="O campo senha precisa ter Letras Maiúsculas e Minúsculas";
+  valSenha3.innerText ="O campo senha precisa ter Letras Números";
+  valSenha4.innerText ="ex: 123@Senha";
+  smalSenha.style.color = "red";
+  valSenha1.style.color = "red";
+  valSenha2.style.color = "red";
+  valSenha3.style.color = "red";
+  valSenha4.style.color = "red";
+  btnSubmit.disabled = true;
+  }else if (validatorSenha(password.value) == true){
+    smalSenha.innerText ="Ok";
+    smalSenha.style.color = "green"; 
+    valSenha1.innerText ="";
+    valSenha2.innerText ="";
+    valSenha3.innerText ="";
+    valSenha4.innerText ="";
+    btnSubmit.disabled = false;
+    btnSubmit.style.backgroundColor = "";
+    btnSubmit.innerText ="Acessar";
   }
 });
 
@@ -102,7 +99,7 @@ btnSubmit.addEventListener("click", async (evento) => {
 function loginSucesso(token) {
   console.log(token);
   sessionStorage.setItem("jwt", token.jwt)
-  alert("Logado com sucesso!");
+  alert(`Login efetuado com sucesso ! Seja bem Vindo`);
   window.location.href ="tarefas.html";
 
 }
@@ -110,8 +107,10 @@ function loginSucesso(token) {
 // Função apresentação para usuário formato alert caso API for false
 function loginErro(erro) {
     console.log(erro);
-    if (erro.status == 400 || erro.status == 404) {
-      smalSenha.innerText ="E-mail e/ou senha inválidos"
-      smalSenha.style.color = "red";
+    if (erro.status == 400) {
+      alert("E-mail e/ou senha inválidos");      
+    }else if(erro.status == 404){
+      alert("Não foi encontrado seus dados na nossa base, cliquei em ok para ir para o cadastro"); 
+      window.location.href ="signup.html";
     }
 }

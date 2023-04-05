@@ -110,18 +110,3 @@ localStorage.password = password.value;
   //localStorage.setItem("password", JSON.stringify(password.value));  
 criarNovaConta();
 });
-
-//CAPTURAR OS DADOS E SALVAR NO LOCALSTORAGE
-document.addEventListener("DOMContentLoaded", function(){
-    
-    var formulario = localStorage.getItem("formulario");
-    if(formulario){ // verifico se o localStorage existe
-
-        var form = document.body.querySelector("form");
-  
-        formulario = JSON.parse(formulario);
-        for(var dados in formulario){
-            
-        }
-    }
-});
