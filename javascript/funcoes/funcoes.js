@@ -44,7 +44,6 @@ function loginSucesso(token) {
 // Função apresentação para usuário formato alert caso API for true
   function cadastroSucesso(usuario) {
     console.log(usuario);
-    localStorage.setItem("usuario", usuario);
     localStorage.setItem("token", usuario.jwt);
     localStorage.setItem("nome", nome.value);
     localStorage.setItem("sobreNome", sobreNome.value);
@@ -61,7 +60,6 @@ function loginSucesso(token) {
         window.location.href ="signup.html";      
       }      
   }
-
   
 async function cadastroAPI(cadastroUsuarioJson) {
   ///Async/Await
@@ -73,7 +71,6 @@ async function cadastroAPI(cadastroUsuarioJson) {
 
   try { //Tentar executar uma ação/fluxo
       let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/users`, configRequest);
-
 
       if (respostaApi.status == 201 || respostaApi.status == 200) {
           let dados = await respostaApi.json();
