@@ -18,6 +18,7 @@ onload = function(){
     console.log(jwt);
    
     buscarCadastroAPI();
+    buscarTarefasApi();
 }
 
 closeApp.addEventListener('click', function(){
@@ -48,9 +49,34 @@ novaTarefa.addEventListener('keyup', function(){
     }
 })
 
-submitTarefas.addEventListener("click", function(){
+
+submitTarefas.addEventListener("click",async function(e){
+
+    let novaTarefaValue = novaTarefa.value;
+
+    if(validaTarefas(novaTarefaValue)){
+        
+        e.preventDefault();
+        novaTarefaValue = normalizaStringUsandoTrim(novaTarefaValue);
     
-        const date = new Date();
+    let tarefaJs = {
+        description: "",
+        completed: false
+    }
+
+    tarefaJs.description = novaTarefa.value;
+//    tarefaJs.completed = 
+
+    let tarefaJson = JSON.stringify(tarefaJs);
+    console.log(tarefaJson);
+    CadastrarTarefasApi(tarefaJson);
+
+    }else {
+        alert('Tarefa não cadastrada!');
+    }
+
+    
+        /*const date = new Date();
         let timestamp = date.toLocaleDateString();
     
         localStorage.novaTarefa = novaTarefa.value;
@@ -69,5 +95,6 @@ submitTarefas.addEventListener("click", function(){
     
 
        //cards.appendChild(tarefasPendentes);
+       */
 
 })

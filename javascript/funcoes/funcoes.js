@@ -27,11 +27,16 @@ function validarTextoTarefas(tarefas){
     return nome.value !=="" && sobreNome.value !== "" && validatorEmail(email.value) !== "" && validatorSenha(password.value) !== "" ;
   }
 
+  function validaTarefas() {
+    return novaTarefa.value !=="";
+  }
+
   // Função apresentação para usuário formato alert caso API for true
 function loginSucesso(token) {
     console.log(token);
     sessionStorage.setItem("jwt", token.jwt);
-     alert(`Login efetuado com sucesso ! Seja bem Vindo`);
+    nome = sessionStorage.getItem("nome");
+     alert(`Login efetuado com sucesso ! Seja bem Vindo ${nome} ${sobreNome}`);
     window.location.href ="tarefas.html";
 }  
 
@@ -122,4 +127,88 @@ function renderizaNomeUsuario(usuario) {
   sessionStorage.setItem("sobreNome", usuario.lastName);
 }
 
+async function CadastrarTarefasApi(tarefaJson) {
+  ///Async/Await
+  let configRequest = {
+    method: "POST",
+    body: tarefaJson,
+      headers: {
+          'Authorization': jwt,
+          "Content-Type": "application/json"
+      }
+  }
+
+  try { //Tentar executar uma ação/fluxo
+      let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks`, configRequest);
+
+
+      if (respostaApi.status == 201 || respostaApi.status == 200) {
+          let dados = await respostaApi.json();
+          cadastraTarefasUsuario(dados);
+      } else {
+          throw respostaApi;
+      }
+  } catch (error) {
+      //Exceção
+      console.log(error);
+  }
+}
+
+function cadastraTarefasUsuario(tarefa) {
+  console.log(tarefa);
+  localStorage.setItem("jwt", tarefa.jwt);
+  //localStorage.setItem("cadastroTarefa", tarefa.description);
+  alert(`cadastro efetuado com sucesso !`);
+  window.location.href ="tarefas.html";
+}
+
+async function buscarTarefasApi() {
+  
+  let configRequest = {
+        headers: {
+          'Authorization': jwt,
+      }
+  }
+
+  try { //Tentar executar uma ação/fluxo
+      let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks`, configRequest);
+
+
+      if (respostaApi.status == 201 || respostaApi.status == 200) {
+          let dados = await respostaApi.json();
+          renderizaTarefasUsuario(dados);
+      } else {
+          throw respostaApi;
+      }
+  } catch (error) {
+      //Exceção
+      console.log(error);
+  }
+}
+
+function renderizaTarefasUsuario(tarefasUsuario) {
+  for (const tarefa of tarefasUsuario) {
+    console.log(tarefa.description);
+
+    if (tarefa.completed){
+      console.log("Tarefa concluída");
+    }else{
+      const date = new Date();
+      let timestamp = date.toLocaleDateString();       
+      let novaDiv = document.createElement("li");
+      novaDiv.classList.add("tarefa");
+  
+      novaDiv.innerHTML = `
+                          <div class="not-done"></div>
+                              <div class="descricao">
+                              <p class="nome">${tarefa.description}</p>
+                              <p class="timestamp">Criada em: ${timestamp}</p>
+                          </div>
+      `;
+      cards.appendChild(novaDiv); 
+    }
+
+  }
+  
+}
 

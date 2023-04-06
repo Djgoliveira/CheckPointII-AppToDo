@@ -6,6 +6,10 @@ let smalSenha = document.querySelector("#valSenha");
 let smalBtn = document.querySelector("#valBtn");
 let btnSubmit = document.querySelector("#btnSubmit");
 
+let nome;
+let sobreNome;
+nome = sessionStorage.getItem("nome");
+sobreNome = sessionStorage.getItem("sobreNome");
 // Desabilitando o botão de submit com id #btnSubmit
 btnSubmit.disabled = true;
 btnSubmit.style.backgroundColor = "gray";
