@@ -41,25 +41,6 @@ function loginSucesso(token) {
       }
   }
 
-// Função apresentação para usuário formato alert caso API for true
-  function cadastroSucesso(usuario) {
-    console.log(usuario);
-    localStorage.setItem("token", usuario.jwt);
-    localStorage.setItem("nome", nome.value);
-    localStorage.setItem("sobreNome", sobreNome.value);
-    //localStorage.setItem("sobrenome", cadastroUsuarioJson.lastName);
-    alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${nome.value} ${sobreNome.value}`);
-    window.location.href ="index.html";
-  }
-  
-  // Função apresentação para usuário formato alert caso API for false
-  function cadastroErro(erro) {
-      console.log(erro);
-      if (erro.status == 400 || erro.status == 404) {
-        alert("Erro ao efetuar o seu cadastro, por favor revise!");
-        window.location.href ="signup.html";      
-      }      
-  }
   
 async function cadastroAPI(cadastroUsuarioJson) {
   ///Async/Await
@@ -84,3 +65,56 @@ async function cadastroAPI(cadastroUsuarioJson) {
   
   }
 }
+
+// Função apresentação para usuário formato alert caso API for true
+function cadastroSucesso(usuario) {
+  console.log(usuario);
+  localStorage.setItem("jwt", usuario.jwt);
+  localStorage.setItem("nome", nome.value);
+  localStorage.setItem("sobreNome", sobreNome.value);
+  //localStorage.setItem("sobrenome", cadastroUsuarioJson.lastName);
+  alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${nome.value} ${sobreNome.value}`);
+  window.location.href ="index.html";
+}
+
+// Função apresentação para usuário formato alert caso API for false
+function cadastroErro(erro) {
+    console.log(erro);
+    if (erro.status == 400 || erro.status == 404) {
+      alert("Erro ao efetuar o seu cadastro, por favor revise!");
+      window.location.href ="signup.html";      
+    }      
+}
+
+async function buscarCadastroAPI() {
+  ///Async/Await
+  let configRequest = {
+    headers: {
+        'Authorization': jwt
+    }
+}
+
+try { //não usamos a função de capturar o caminho relativo pois estava dando erro ai colocamos o caminho direto
+  let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/users/getMe`, configRequest);
+
+
+  if (respostaApi.status == 201 || respostaApi.status == 200) {
+      let dados = await respostaApi.json();
+      renderizaNomeUsuario(dados);
+  } else {
+      throw respostaApi;
+  }
+} catch (error) {
+  //Exceção
+  console.log(error);
+}
+}
+
+function renderizaNomeUsuario(usuario) {
+  const nomeTarefas = document.getElementById("nomeTarefas");
+  nomeTarefas.innerText = `${usuario.firstName} ${usuario.lastName}`;
+  sessionStorage.setItem("nome", usuario.firstName);
+  sessionStorage.setItem("sobreNome", usuario.lastName);
+}
+
+
