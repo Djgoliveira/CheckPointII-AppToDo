@@ -9,6 +9,8 @@ let criarConta = document.getElementById("criarConta");
     criarConta.style.background="gray";
     criarConta.setAttribute('disabled', true);
 
+    
+let jwt;
 
 criarConta.addEventListener('click', async function (e){
 let nomeValue = nome.value;
@@ -51,34 +53,6 @@ let passwordValue = password.value
         alert('Usuário não cadastrado!');
     }
 });
-
-async function cadastroAPI(cadastroUsuarioJson) {
-    ///Async/Await
-    let configRequest = {
-        method: "POST",
-      body: cadastroUsuarioJson,
-      headers: { "Content-Type": "application/json" },
-    }
-
-    try { //Tentar executar uma ação/fluxo
-        let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/users`, configRequest);
-
-
-        if (respostaApi.status == 201 || respostaApi.status == 200) {
-            let dados = await respostaApi.json();
-            cadastroSucesso(dados);
-        } else {
-            throw respostaApi;
-        }
-    } catch (error) {
-        //Exceção
-        cadastroErro(error);
-    
-    }
-}
-
-
-
 
 //VALIDACOES DO FORM
 form.addEventListener("submit", ()=>{

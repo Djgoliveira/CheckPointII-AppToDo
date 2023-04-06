@@ -25,12 +25,12 @@ function validatorSenha(password){
   // Função apresentação para usuário formato alert caso API for true
 function loginSucesso(token) {
     console.log(token);
-    sessionStorage.setItem("jwt", token.jwt)
-    alert(`Login efetuado com sucesso ! Seja bem Vindo`);
+    sessionStorage.setItem("jwt", token.jwt);
+     alert(`Login efetuado com sucesso ! Seja bem Vindo`);
     window.location.href ="tarefas.html";
-  
-  }  
-  // Função apresentação para usuário formato alert caso API for false
+}  
+
+// Função apresentação para usuário formato alert caso API for false
   function loginErro(erro) {
       console.log(erro);
       if (erro.status == 400) {
@@ -41,16 +41,16 @@ function loginSucesso(token) {
       }
   }
 
-  // Função apresentação para usuário formato alert caso API for true
-function cadastroSucesso(token, cadastroUsuarioJson) {
-    console.log(token);
-    console.log(usuarioJs);
-    localStorage.setItem("jwt", token.jwt);
-    //localStorage.setItem("nome", cadastroUsuarioJson.firstName);
+// Função apresentação para usuário formato alert caso API for true
+  function cadastroSucesso(usuario) {
+    console.log(usuario);
+    localStorage.setItem("usuario", usuario);
+    localStorage.setItem("token", usuario.jwt);
+    localStorage.setItem("nome", nome.value);
+    localStorage.setItem("sobreNome", sobreNome.value);
     //localStorage.setItem("sobrenome", cadastroUsuarioJson.lastName);
-    alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${usuarioJs.lastName}`);
+    alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${nome.value} ${sobreNome.value}`);
     window.location.href ="index.html";
-  
   }
   
   // Função apresentação para usuário formato alert caso API for false
@@ -61,35 +61,29 @@ function cadastroSucesso(token, cadastroUsuarioJson) {
         window.location.href ="signup.html";      
       }      
   }
+
   
-/*
-function criarNovaConta(){
-    if ( localStorage.nome == nome.value &&
-        localStorage.sobreNome == sobreNome.value &&
-       localStorage.email ==  email.value &&
-        localStorage.password ==password.value ){
-            alert(`Sua conta foi criada com sucesso ${nome.value}`);
-    }else{
-        alert(`Erro ao criar sua conta ${nome.value} ${sobreNome.value}, por favor revise!`)
-    }
-    //window.location.reload(true);
-}*/
+async function cadastroAPI(cadastroUsuarioJson) {
+  ///Async/Await
+  let configRequest = {
+      method: "POST",
+    body: cadastroUsuarioJson,
+    headers: { "Content-Type": "application/json" },
+  }
 
-function verificarCadastro(){
-    if(email.value != localStorage.email){
-        window.location.href='./signup.html';
-        alert("Não encontramos seu cadastro, clique em Ok para se cadastrar!");
-    }else{
-        login();
-    }    
-}
+  try { //Tentar executar uma ação/fluxo
+      let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/users`, configRequest);
 
-function login(){
-    if(email.value == localStorage.email && password.value == localStorage.password){
-        window.location.href='./tarefas.html';
-        alert(`Login Ok, seja Bem vindo ${localStorage.nome}`);
-    }else {
-        window.location.href='./index.html';   
-        alert("Senha invalida!");             
-    }
+
+      if (respostaApi.status == 201 || respostaApi.status == 200) {
+          let dados = await respostaApi.json();
+          cadastroSucesso(dados);
+      } else {
+          throw respostaApi;
+      }
+  } catch (error) {
+      //Exceção
+      cadastroErro(error);
+  
+  }
 }
