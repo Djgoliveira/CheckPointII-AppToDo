@@ -42,31 +42,27 @@ function loginSucesso(token) {
   }
 
   // Função apresentação para usuário formato alert caso API for true
-function cadastroSucesso(token, objetoCadastroUsuarioJson) {
+function cadastroSucesso(token, cadastroUsuarioJson) {
     console.log(token);
-    console.log(objetoCadastroUsuarioJson);
-    sessionStorage.setItem("jwt", token.jwt);
-    sessionStorage.setItem("firtname", objetoCadastroUsuarioJson.firstName);
-    sessionStorage.setItem("lastname", objetoCadastroUsuarioJson.lastName);
-    alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${objetoCadastroUsuarioJson.firstName} ${objetoCadastroUsuarioJson.lastName}`);
+    console.log(usuarioJs);
+    localStorage.setItem("jwt", token.jwt);
+    //localStorage.setItem("nome", cadastroUsuarioJson.firstName);
+    //localStorage.setItem("sobrenome", cadastroUsuarioJson.lastName);
+    alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${usuarioJs.lastName}`);
     window.location.href ="index.html";
   
   }
   
   // Função apresentação para usuário formato alert caso API for false
-  function cadastroErro(erro,token) {
+  function cadastroErro(erro) {
       console.log(erro);
-      console.log(token);
       if (erro.status == 400 || erro.status == 404) {
         alert("Erro ao efetuar o seu cadastro, por favor revise!");
         window.location.href ="signup.html";      
-      }
-        
-      
+      }      
   }
   
-  
-
+/*
 function criarNovaConta(){
     if ( localStorage.nome == nome.value &&
         localStorage.sobreNome == sobreNome.value &&
@@ -77,7 +73,7 @@ function criarNovaConta(){
         alert(`Erro ao criar sua conta ${nome.value} ${sobreNome.value}, por favor revise!`)
     }
     //window.location.reload(true);
-}
+}*/
 
 function verificarCadastro(){
     if(email.value != localStorage.email){

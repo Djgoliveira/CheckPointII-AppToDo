@@ -42,41 +42,42 @@ let passwordValue = password.value
         cadastroUsuario.password = passwordValue;
 
         let cadastroUsuarioJson = JSON.stringify(cadastroUsuario);
-        console.log(cadastroUsuarioJson);
+        console.log(cadastroUsuario);
         
 
         criarConta.removeAttribute('disabled');
-        cadastroAPI(cadastroUsuario);
+        cadastroAPI(cadastroUsuarioJson);
     }else{
         alert('Usuário não cadastrado!');
     }
 });
 
-function cadastroAPI(cadastroUsuarioJson){
-    const configRequest = {
+async function cadastroAPI(cadastroUsuarioJson) {
+    ///Async/Await
+    let configRequest = {
         method: "POST",
-        body: cadastroUsuarioJson,
-        headers: {
-            'Content-type': 'application/json'
-        }
+      body: cadastroUsuarioJson,
+      headers: { "Content-Type": "application/json" },
     }
 
-    fetch('https://todo-api.ctd.academy/v1/users', configRequest)
-        .then(resposta => {
-            if (resposta.status == 201 || resposta.status == 200) {
-                return resposta.json();
-            } else {
-                throw resposta;
-            }
-        })
-        .then(data => {
-              cadastroSucesso(data);                
-            })
-            .catch(erro => {
-                cadastroErro(erro);
-                
-            });
+    try { //Tentar executar uma ação/fluxo
+        let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/users`, configRequest);
+
+
+        if (respostaApi.status == 201 || respostaApi.status == 200) {
+            let dados = await respostaApi.json();
+            cadastroSucesso(dados);
+        } else {
+            throw respostaApi;
+        }
+    } catch (error) {
+        //Exceção
+        cadastroErro(error);
+    
+    }
 }
+
+
 
 
 //VALIDACOES DO FORM
