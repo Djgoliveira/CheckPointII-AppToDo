@@ -197,7 +197,7 @@ function renderizaTarefasUsuario(tarefasUsuario) {
       let timestamp = date.toLocaleDateString();       
       let novaDiv = document.createElement("li");
       novaDiv.classList.add("tarefa");
-  
+
       novaDiv.innerHTML = `
                               <div id="${tarefa.id}" class="not-done" onclick="editarTarefasUsuario(${tarefa.id})"></div>
                               <div class="descricao">
