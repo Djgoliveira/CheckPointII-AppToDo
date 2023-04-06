@@ -7,6 +7,7 @@ const alertTarefas = document.getElementById("novatarefasalert");
 const novaTarefa = document.getElementById("novaTarefa");
 const closeApp = document.getElementById("closeApp");
 
+
 let jwt;
 let nome;
 let sobreNome;
@@ -74,27 +75,7 @@ submitTarefas.addEventListener("click",async function(e){
     }else {
         alert('Tarefa não cadastrada!');
     }
-
-    
-        /*const date = new Date();
-        let timestamp = date.toLocaleDateString();
-    
-        localStorage.novaTarefa = novaTarefa.value;
-        
-        let novaDiv = document.createElement("li");
-        novaDiv.classList.add("tarefa");
-    
-        novaDiv.innerHTML = `
-                            <div class="not-done"></div>
-                                <div class="descricao">
-                                <p class="nome">${novaTarefa.value}</p>
-                                <p class="timestamp">Criada em: ${timestamp}</p>
-                            </div>
-        `;
-        cards.appendChild(novaDiv); 
-    
-
-       //cards.appendChild(tarefasPendentes);
-       */
-
 })
+
+
+

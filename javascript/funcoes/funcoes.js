@@ -199,7 +199,7 @@ function renderizaTarefasUsuario(tarefasUsuario) {
       novaDiv.classList.add("tarefa");
   
       novaDiv.innerHTML = `
-                          <div class="not-done"></div>
+                              <div id="${tarefa.id}" class="not-done" onclick="editarTarefasUsuario(${tarefa.id})"></div>
                               <div class="descricao">
                               <p class="nome">${tarefa.description}</p>
                               <p class="timestamp">Criada em: ${timestamp}</p>
@@ -212,3 +212,6 @@ function renderizaTarefasUsuario(tarefasUsuario) {
   
 }
 
+function editarTarefasUsuario(idTarefa){
+  console.log(idTarefa);
+}
