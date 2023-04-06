@@ -8,6 +8,11 @@ function validatorSenha(password){
     return senhaExpress.test(password);
 }
 
+function validarTextoTarefas(tarefas){
+  let tarefaExpress = /[a-zA-Z\u00C0-\u00FF ]+/i;
+  return tarefaExpress.test(tarefas);
+}
+
   // Função para normalizar a string 
   function normalizaStringUsandoTrim(string) {
     return string.trim();
