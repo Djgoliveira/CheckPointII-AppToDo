@@ -6,13 +6,17 @@ const submitTarefas = document.getElementById("submitTarefas");
 const alertTarefas = document.getElementById("novatarefasalert");
 const novaTarefa = document.getElementById("novaTarefa");
 const closeApp = document.getElementById("closeApp");
+//let quantidadeTarefas = document.getElementById("skeleton");
 
 
 let jwt;
 let nome;
 let sobreNome;
-onload = function(){
 
+onload = function(){
+    
+    //renderizarSkeletons(`3`, ".tarefas-pendentes");
+    //renderizarSkeletons(`3`, ".tarefas-terminadas");
     console.log("A página carregou automáticamente.");
     jwt = sessionStorage.getItem("jwt");
     

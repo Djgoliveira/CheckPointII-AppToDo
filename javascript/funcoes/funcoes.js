@@ -1,3 +1,5 @@
+const { log } = require("console");
+
 function validatorEmail(email){
     let emailExpress = /^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/;
     return emailExpress.test(email);
@@ -143,8 +145,9 @@ async function CadastrarTarefasApi(tarefaJson) {
 
 
       if (respostaApi.status == 201 || respostaApi.status == 200) {
-          let dados = await respostaApi.json();
-          cadastraTarefasUsuario(dados);
+          let dados = await respostaApi.json();          
+      cadastraTarefasUsuario(normalizaStringUsandoTrim(dados.description));
+      removerSkeleton();
       } else {
           throw respostaApi;
       }
@@ -158,7 +161,7 @@ function cadastraTarefasUsuario(tarefa) {
   console.log(tarefa);
   localStorage.setItem("jwt", tarefa.jwt);
   //localStorage.setItem("cadastroTarefa", tarefa.description);
-  alert(`cadastro efetuado com sucesso !`);
+  alert(`Tarefa Cadastrada com sucesso !`);
   window.location.href ="tarefas.html";
 }
 
@@ -187,11 +190,30 @@ async function buscarTarefasApi() {
 }
 
 function renderizaTarefasUsuario(tarefasUsuario) {
+
+let tarefasTerminadas = document.querySelector(".tarefas-terminadas");
+
   for (const tarefa of tarefasUsuario) {
     console.log(tarefa.description);
 
     if (tarefa.completed){
-      console.log("Tarefa concluída");
+      const date = new Date();
+      let timestamp = date.toLocaleDateString();       
+      let novaDiv = document.createElement("li");
+      novaDiv.classList.add("tarefa");
+
+      novaDiv.innerHTML = `   <div class ="done"></div>
+                              <div class="descricao">
+                              <p class="nome">${tarefa.description}</p>
+                              <div>
+                              <button><i id="${tarefa.id}" class="fas fa-undo-alt change"></i><button>
+                              <button><i id="${tarefa.id}" class="far fa-trash-alt"></i></button>
+                              </div>
+                              </div>                              
+                              <p class="timestamp">Criada em: ${timestamp}</p>
+                          </div>
+      `;
+      tarefasTerminadas.appendChild(novaDiv); 
     }else{
       const date = new Date();
       let timestamp = date.toLocaleDateString();       
@@ -212,8 +234,53 @@ function renderizaTarefasUsuario(tarefasUsuario) {
   
 }
 
-function editarTarefasUsuario(idTarefa){
+async function editarTarefasUsuario(idTarefa){
   console.log(idTarefa);
+  //Define um objeto JS para o usuário
+  let tarefaJs = {
+    completed: false
+}
+
+let tarefaJson = JSON.stringify(tarefaJs);
+
+ let configRequest = {
+    method: "PUT",
+    body: tarefaJson,
+      headers: {
+          'id':idTarefa,
+          'Authorization': jwt,
+          "Content-Type": "application/json"
+      }
+  }
+
+try { //Tentar executar uma ação/fluxo
+  let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
+
+
+  if (respostaApi.status == 201 || respostaApi.status == 200) {
+      let dados = await respostaApi.json();
+      editarTarefas(dados);
+  } else {
+      throw respostaApi;
+  }
+} catch (error) {
+  //Exceção
+  console.log(error);
+}
+
+}
+
+function editarTarefas(idTarefa){
+  console.log(idTarefa);
+  if (idTarefa.completed == false){
+    idTarefa.completed ==true;
+    alert('Tarefa Editada');
+  }else if (idTarefa.completed == true){
+    idTarefa.completed = false;
+    alert('Tarefa Editada');
+  }else {
+    alert('Erro ao Editar Tarefa');
+  }
 }
 
 function mostrarSpinner() {
@@ -264,3 +331,40 @@ function mostrarSpinner() {
   return;
  }
 
+ function renderizarSkeletons(quantidade, conteiner) {
+  // Selecionamos o conteiner
+  const conteinerTarefas = document.querySelector(conteiner);
+  
+  // Criamos um array que terá um lenght igual ao número de
+  //skeletons que queremos renderizar
+  const skeletons = Array.from({ length: quantidade});
+  
+  // Iteramos sobre o array acessando cada elemento
+  skeletons.forEach(() => {
+    // Guardamos o HTML de cada skeleton. Adicionamos uma classe com o seletor do conteiner
+    // Isso nos permitirá posteriormente eliminar os skeletons do referido conteiner
+    const template = `
+    <li class="skeleton-conteiner ${conteiner.replace(".", "")}-child">
+      <div class="skeleton-card">
+        <p class="skeleton-text"></p>
+        <p class="skeleton-text"></p>
+      </div>
+    </li>
+  `;
+  
+    // Inserimos o HTML dentro do conteiner
+    conteinerTarefas.innerHTML += template;
+  });
+ }
+
+ function removerSkeleton(conteiner) {
+  // Selecionamos o conteiner
+  const conteinerTarefas = document.querySelector(conteiner);
+  
+  // Selecionamos todos os skeletons dentro deste conteiner
+  const skeletons = document.querySelectorAll(`${conteiner}-child`);
+  
+  // Iteramos sobre a lista de skeletons e removemos cada um deles
+  // do referido conteiner
+  skeletons.forEach((skeleton) => conteinerTarefas.removeChild(skeleton));
+ }
