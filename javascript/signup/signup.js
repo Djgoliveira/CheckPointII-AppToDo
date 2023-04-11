@@ -22,6 +22,7 @@ let passwordValue = password.value
     if(validaCadastro(nomeValue,sobreNomeValue, emailValue,passwordValue)){
 
         e.preventDefault();
+            mostrarSpinner();
 
         nomeValue = normalizaStringUsandoTrim(nomeValue);
         sobreNomeValue = normalizaStringUsandoTrim(sobreNomeValue);

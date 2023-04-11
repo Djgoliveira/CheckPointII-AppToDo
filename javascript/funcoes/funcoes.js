@@ -42,9 +42,10 @@ function loginSucesso(token) {
 
 // Função apresentação para usuário formato alert caso API for false
   function loginErro(erro) {
-      console.log(erro);
+       console.log(erro);
       if (erro.status == 400) {
-        alert("E-mail e/ou senha inválidos");      
+        alert("E-mail e/ou senha inválidos"); 
+       window.location.href ="index.html";
       }else if(erro.status == 404){
         alert("Não foi encontrado seus dados na nossa base, cliquei em ok para ir para o cadastro"); 
         window.location.href ="signup.html";
@@ -82,8 +83,7 @@ function cadastroSucesso(usuario) {
   localStorage.setItem("jwt", usuario.jwt);
   localStorage.setItem("nome", nome.value);
   localStorage.setItem("sobreNome", sobreNome.value);
-  //localStorage.setItem("sobrenome", cadastroUsuarioJson.lastName);
-  alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${nome.value} ${sobreNome.value}`);
+   alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${nome.value} ${sobreNome.value}`);
   window.location.href ="index.html";
 }
 
@@ -215,3 +215,52 @@ function renderizaTarefasUsuario(tarefasUsuario) {
 function editarTarefasUsuario(idTarefa){
   console.log(idTarefa);
 }
+
+function mostrarSpinner() {
+  // Selecionamos o corpo. Isso nos ajudará a incorporar nosso spinner
+  // dentro de nosso HTML.
+  const body = document.querySelector("body");
+  
+  // Selecionamos o formulário de registro para poder ocultá-lo durante o carregamento
+  const form = document.querySelector("form");
+  
+  // Criamos nosso spinner
+  const spinnerContainer = document.createElement("div");
+  const spinner = document.createElement("div");
+  const ingressar = document.getElementById("ingressar");
+  ingressar.classList.add("hidden");
+  
+  // Atribuímos os IDs a cada novo elemento, para poder manipular
+  // seus estilos
+  spinnerContainer.setAttribute("id", "container-load");
+  spinner.setAttribute("id", "load");
+  
+  // Ocultamos o formulário de registro
+  form.classList.add("hidden");
+
+  
+  // Adicionamos o Spinner ao nosso HTML.
+  spinnerContainer.appendChild(spinner);
+  body.appendChild(spinnerContainer);
+  
+  return;
+ }
+
+ function ocultarSpinner() {
+  // Selecionamos o corpo para poder remover o spinner do HTML.
+  const body = document.querySelector("body");
+  
+  // Selecionamos o formulário de registro para poder mostrar-lo novamente
+  const form = document.querySelector("form");
+  
+  // Selecionamos o spinner
+  const spinnerContainer = document.querySelector("#conteiner-load");
+  
+  // Removemos o spinner do HTML
+  body.removeChild(spinnerContainer);
+  
+  // Removemos a classe que oculta o formulário
+  form.classList.remove("hidden");
+  return;
+ }
+

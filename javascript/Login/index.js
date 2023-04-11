@@ -10,9 +10,9 @@ let nome;
 let sobreNome;
 nome = sessionStorage.getItem("nome");
 sobreNome = sessionStorage.getItem("sobreNome");
-// Desabilitando o botão de submit com id #btnSubmit
 btnSubmit.disabled = true;
 btnSubmit.style.backgroundColor = "gray";
+btnSubmit.style.cursor = "not-allowed";
 
 // Evento para habilitar o botão de submit quando passar na verificação de email e manipulação do DOM
 email.addEventListener("keyup", () => {
@@ -23,7 +23,8 @@ email.addEventListener("keyup", () => {
   } else {
         smalEmail.innerText = "Ok"; 
         smalEmail.style.color = "green";     
-        btnSubmit.disabled = false;           
+        btnSubmit.disabled = false; 
+        btnSubmit.style.cursor = "not-allowed";          
   }
 });
 
@@ -33,28 +34,31 @@ password.addEventListener("keyup", (e) => {
     smalSenha.innerText ="O campo senha não pode ser vazio";
     smalSenha.style.color = "red";
     btnSubmit.disabled = true;
+    btnSubmit.style.cursor = "not-allowed"; 
 } else if (validatorSenha(password.value) == false) {
   smalSenha.innerText ="O campo senha precisa ter no máximo 10 caracteres";
   valSenha1.innerText ="O campo senha precisa ter caracteres especiais";
-  valSenha2.innerText ="O campo senha precisa ter Letras Maiúsculas e Minúsculas";
-  valSenha3.innerText ="O campo senha precisa ter Letras Números";
+  valSenha3.innerText ="O campo senha precisa ter Letras e Números";
   valSenha4.innerText ="ex: 123@Senha";
   smalSenha.style.color = "red";
   valSenha1.style.color = "red";
-  valSenha2.style.color = "red";
   valSenha3.style.color = "red";
   valSenha4.style.color = "red";
   btnSubmit.disabled = true;
-  }else if (validatorSenha(password.value) == true){
+  }else if((validatorSenha(password.value) == true && validatorEmail(email.value) ==false)){
+    smalEmail.innerText ="Favor Verificar o campo Email";
+    smalEmail.style.color = "red";
+    btnSubmit.disabled = true;
+  } else if (validatorSenha(password.value) == true && validatorEmail(email.value) ==true){
     smalSenha.innerText ="Ok";
     smalSenha.style.color = "green"; 
     valSenha1.innerText ="";
-    valSenha2.innerText ="";
     valSenha3.innerText ="";
     valSenha4.innerText ="";
     btnSubmit.disabled = false;
     btnSubmit.style.backgroundColor = "";
     btnSubmit.innerText ="Acessar";
+    btnSubmit.style.cursor = ""; 
   }
 });
 
@@ -64,6 +68,7 @@ btnSubmit.addEventListener("click", async (evento) => {
   const passwordValue = password.value;
 
   evento.preventDefault();
+    mostrarSpinner();
 
   if (validaLogin(emailValue, passwordValue)) {
     const emailLogin = normalizaStringUsandoTrim(emailValue);
@@ -90,9 +95,11 @@ btnSubmit.addEventListener("click", async (evento) => {
       })
       .then((data) => {
         loginSucesso(data);
+        
       })
       .catch((erro) => {
         loginErro(erro);
+        
       });
   }
 });
