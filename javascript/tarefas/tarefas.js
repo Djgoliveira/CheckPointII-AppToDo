@@ -124,12 +124,12 @@ function renderizaTarefasUsuario(listaTarefas) {
                                 <div class="descricao">
                                 <p class="nome">${tarefa.description}</p>
                                 <div>
-                              <button onclick="editarTarefa(${tarefa.id})">
+                              <button onclick="retornaTarefa(${tarefa.id})">
                                 <i id="${tarefa.id}" class="fas fa-undo-alt change"></i>
                               <button>
-                              <button>
+                              <button onclick="deletarTarefa(${tarefa.id})">
                                 <i id="${tarefa.id}" class="far fa-trash-alt"></i>
-                              </button>
+                              </button >
                               <p class="timestamp"> Finalizad em: ${timestamp}</p>
                               </div>                              
                               </div>                            

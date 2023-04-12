@@ -332,6 +332,108 @@ async function editarTarefa(idTarefa) {
   window.location.href = "tarefas.html";
 }
 
+async function retornaTarefa(idTarefa) {
+  let tarefa = listaTarefasGlobal.find(e => e.id == idTarefa);
+
+  let result = await Swal.fire({
+    title: 'Deseja retomar essa tarefa?',
+    text: "Tem certeza?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sim, Tenho!'
+  });
+
+  if (!result.isConfirmed) {
+    isCancelled = true;
+    await Swal.fire(
+      'Canceleda!',
+      'Sua Tarefa não foi retomada.',
+      'warning'
+    )
+    return;
+  }
+  
+  let tarefaJs = { completed: !tarefa.completed };
+    
+  let tarefaJson = JSON.stringify(tarefaJs);
+  
+  let configRequest = {
+    method: "PUT",
+    body: tarefaJson,
+    headers: {
+      'id': idTarefa,
+      'Authorization': jwt,
+      "Content-Type": "application/json"
+    }
+  }
+  
+  try {
+    if (isCancelled) return; 
+    
+    let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
+    if (respostaApi.status == 201 || respostaApi.status == 200) {
+      let dados = await respostaApi.json();
+      renderizaTarefasUsuario(dados);
+      window.location='tarefas.html';
+    } else {
+      throw respostaApi;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+
+  window.location.href = "tarefas.html";
+}
+
+async function deletarTarefa(idTarefa) {
+  let result = await Swal.fire({
+    title: 'Deseja realmente excluir essa tarefa?',
+    text: "Tem certeza?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sim, Tenho!'
+  });
+
+  if (!result.isConfirmed) {
+    return;
+  }
+  
+  let configRequest = {
+    method: "DELETE",
+    headers: {
+      'id': idTarefa,
+      'Authorization': jwt,
+      "Content-Type": "application/json"
+    }
+  }
+  
+  try {
+    let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
+    if (respostaApi.status == 204) {
+      Swal.fire(
+        'Deletada!',
+        'Sua Tarefa foi deletada.',
+        'success'
+      )
+      // Atualiza a lista de tarefas na página
+      let index = listaTarefasGlobal.findIndex(e => e.id == idTarefa);
+      if (index !== -1) {
+        listaTarefasGlobal.splice(index, 1);
+        renderizaTarefasUsuario(listaTarefasGlobal);
+      }
+    } else {
+      throw respostaApi;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+  window.location.href = "tarefas.html";
+}
+
 function mostrarSpinner() {
   // Selecionamos o corpo. Isso nos ajudará a incorporar nosso spinner
   // dentro de nosso HTML.
