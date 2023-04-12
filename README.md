@@ -1,6 +1,33 @@
 # CheckPointII-AppToDo
 Criar um site estilo To Do App
 
+Autores (Contribuições)
+
+Douglas Henrique Ferreira de Oliveira e Bruno Souza
+Principais atividades realizadas:
+Criação de Funções
+Comunicação e Configuração com a API;
+Endpoint: /login
+Endpoint: /cadastro
+Endpoint: /tarefas
+Revisões de código;
+
+Gabriel Hebreus
+Principais atividades realizadas:
+Tela de Tarefas;
+Endpoint: /criarCadastro;
+Animação das Tarefas
+
+Erick Cardoso
+Principais atividades realizadas:
+Captura dos componentes via Dom.
+Revisões de código;
+
+Fernanda
+Principais atividades realizadas:
+Alertas e pop-up;
+Validações dos campos no Projeto
+
 
 Checkpoint II - Front End II
 To Do App
