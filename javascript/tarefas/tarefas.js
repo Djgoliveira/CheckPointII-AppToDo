@@ -18,10 +18,10 @@ onload = function(){
     renderizarSkeletons(3, ".tarefas-pendentes");
     renderizarSkeletons(2, ".tarefas-terminadas");
 
-    console.log("A página carregou automáticamente.");
+    //console.log("A página carregou automáticamente.");
     jwt = sessionStorage.getItem("jwt");
     
-    console.log(jwt);
+    //console.log(jwt);
    
     buscarCadastroAPI();
     buscarTarefasApi();
@@ -33,14 +33,24 @@ closeApp.addEventListener('click', function(){
     nome = sessionStorage.getItem("nome");
     sobreNome = sessionStorage.getItem("sobreNome");
 
-    let resposta = confirm(`Deseja realmente sair ${nome} ${sobreNome} `);
-    let sair = window.location.href='./index.html';
-    if(resposta == true){
-        return sair;
-    }else {
-        window.location.href='./tarefas.html';
-    }
+    Swal.fire({
+        title: 'Realmente deseja sair da página ',
+        text: ` ${nome} ${sobreNome}?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: 'green',
+        cancelButtonColor: 'red',
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            sessionStorage.removeItem("jwt");
+            window.location.href = "index.html";
+        }else {
+            window.location.href='./tarefas.html';
+        }
   })
+})
 
 novaTarefa.addEventListener('keyup', function(){
     if (novaTarefa.value.length == ' ' || novaTarefa.value == 0){
@@ -108,7 +118,8 @@ function renderizaTarefasUsuario(listaTarefas) {
         } else {
             // Tarefas pendentes
             console.log("Tarefa pendente");
-
+            const date = new Date();
+            let timestamp = date.toLocaleDateString();
             // Criando um novo item <li>
             let li = document.createElement("li");
             li.classList.add("tarefa");
@@ -117,7 +128,7 @@ function renderizaTarefasUsuario(listaTarefas) {
                             <div class="not-done" id="${tarefa.id}" onclick="editarTarefa(${tarefa.id})"></div>
                             <div class="descricao">
                                 <p class="nome">${tarefa.description}</p>
-                                <p class="timestamp"><i class="far fa-calendar-alt"></i> ${tarefa.createdAt}</p>
+                                <p class="timestamp">Criado em: <i class="far fa-calendar-alt"></i> ${timestamp}</p>
                             </div>
                          `;
 

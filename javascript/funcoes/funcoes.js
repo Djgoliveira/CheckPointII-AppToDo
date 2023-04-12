@@ -35,21 +35,41 @@ function validaTarefas() {
 function loginSucesso(token) {
   console.log(token);
   sessionStorage.setItem("jwt", token.jwt);
-  nome = sessionStorage.getItem("nome");
-  alert(`Login efetuado com sucesso ! Seja bem Vindo ${nome} ${sobreNome}`);
-  window.location.href = "tarefas.html";
+  
+  Swal.fire(
+    `Login Efetuado com Sucesso!`,
+    `Seja Bem Vindo(a)`,
+    'success'  
+  )
+  setTimeout(() => {
+    window.location.href = "tarefas.html";
+  }, "10000");
+  
 }
 
 // Função apresentação para usuário formato alert caso API for false
 function loginErro(erro) {
   console.log(erro);
   if (erro.status == 400) {
-    alert("E-mail e/ou senha inválidos");
-    window.location.href = "index.html";
+    Swal.fire(
+      `E-mail e/ou senha inválidos!`,
+      ``,
+      'error'  
+    )
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, "5000");
+    
   } else if (erro.status == 404) {
-    alert("Não foi encontrado seus dados na nossa base, cliquei em ok para ir para o cadastro");
-    window.location.href = "signup.html";
-  }
+    Swal.fire(
+      `Não foi possivel encontrar seus dados na nossa base, cliquei em ok para ir para se cadastrar!`,
+      ``,
+      'info'  
+    )
+    setTimeout(() => {
+      window.location.href = "signup.html";
+    }, "10000");
+    }
 }
 
 
@@ -80,19 +100,41 @@ async function cadastroAPI(cadastroUsuarioJson) {
 // Função apresentação para usuário formato alert caso API for true
 function cadastroSucesso(usuario) {
   console.log(usuario);
-  localStorage.setItem("jwt", usuario.jwt);
-  localStorage.setItem("nome", nome.value);
-  localStorage.setItem("sobreNome", sobreNome.value);
-  alert(`cadastro efetuado com sucesso ! Seja bem Vindo ${nome.value} ${sobreNome.value}`);
-  window.location.href = "index.html";
+  sessionStorage.setItem("jwt", usuario.jwt);
+  sessionStorage.setItem("nome", nome.value);
+  sessionStorage.setItem("sobreNome", sobreNome.value);
+  Swal.fire(
+    `Cadastro efetuado com sucesso!`,
+    `Seja Bem Vindo(a) ${nome.value} ${sobreNome.value}`,
+    'success'  
+  )
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, "10000");
+  
 }
 
-// Função apresentação para usuário formato alert caso API for false
+
 function cadastroErro(erro) {
   console.log(erro);
-  if (erro.status == 400 || erro.status == 404) {
-    alert("Erro ao efetuar o seu cadastro, por favor revise!");
-    window.location.href = "signup.html";
+  if (erro.status == 400) {
+    Swal.fire(
+      `Email ja cadastrado, clique em ok para fazer login!`,
+      ``,
+      'info'  
+  )
+    setTimeout(() => {
+      window.location.href = "index.html";
+    }, "10000");
+  }else if( erro.status == 404){
+    Swal.fire(
+      `Erro ao Efetuar cadastro, por favor Revise!`,
+      ``,
+      'info'  
+  )
+    setTimeout(() => {
+      window.location.href = "signup.html";
+    }, "10000");
   }
 }
 
