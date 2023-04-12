@@ -299,7 +299,7 @@ async function editarTarefa(idTarefa) {
     )
     return;
   }
-
+  
   let tarefaJs = { completed: !tarefa.completed };
     
   let tarefaJson = JSON.stringify(tarefaJs);
@@ -328,6 +328,8 @@ async function editarTarefa(idTarefa) {
   } catch (error) {
     console.log(error);
   }
+
+  window.location.href = "tarefas.html";
 }
 
 function mostrarSpinner() {
