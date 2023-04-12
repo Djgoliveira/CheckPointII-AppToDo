@@ -14,9 +14,10 @@ let nome;
 let sobreNome;
 
 onload = function(){
-    
-    //renderizarSkeletons(`3`, ".tarefas-pendentes");
-    //renderizarSkeletons(`3`, ".tarefas-terminadas");
+    //skeleton
+    renderizarSkeletons(3, ".tarefas-pendentes");
+    renderizarSkeletons(2, ".tarefas-terminadas");
+
     console.log("A página carregou automáticamente.");
     jwt = sessionStorage.getItem("jwt");
     
@@ -24,6 +25,7 @@ onload = function(){
    
     buscarCadastroAPI();
     buscarTarefasApi();
+    
 }
 
 closeApp.addEventListener('click', function(){
@@ -51,12 +53,14 @@ novaTarefa.addEventListener('keyup', function(){
         normalizaStringUsandoTrim(novaTarefa.value);
         submitTarefas.disabled= false;
         submitTarefas.style.cursor = "";
+        
+        
     }
 })
 
 
 submitTarefas.addEventListener("click",async function(e){
-
+    
     let novaTarefaValue = novaTarefa.value;
 
     if(validaTarefas(novaTarefaValue)){
@@ -83,3 +87,41 @@ submitTarefas.addEventListener("click",async function(e){
 
 
 
+function renderizaTarefasUsuario(listaTarefas) {
+
+
+    /// Remover os skeletons da tela
+    removerSkeleton(".tarefas-pendentes");
+    removerSkeleton(".tarefas-terminadas");
+
+
+    listaTarefasGlobal = listaTarefas;
+
+    //Elemento pai
+    let tarefasPendentesDom = document.querySelector(".tarefas-pendentes");
+
+    for (let tarefa of listaTarefas) {
+        console.log(tarefa);
+
+        if (tarefa.completed) {
+            console.log("Tarefa concluída");
+        } else {
+            // Tarefas pendentes
+            console.log("Tarefa pendente");
+
+            // Criando um novo item <li>
+            let li = document.createElement("li");
+            li.classList.add("tarefa");
+
+            li.innerHTML = `
+                            <div class="not-done" id="${tarefa.id}" onclick="editarTarefa(${tarefa.id})"></div>
+                            <div class="descricao">
+                                <p class="nome">${tarefa.description}</p>
+                                <p class="timestamp"><i class="far fa-calendar-alt"></i> ${tarefa.createdAt}</p>
+                            </div>
+                         `;
+
+            tarefasPendentesDom.appendChild(li);
+        }
+    }
+}
