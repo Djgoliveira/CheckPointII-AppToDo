@@ -275,14 +275,12 @@ function renderizaTarefasUsuario(tarefasUsuario) {
 
 }
 
-async function editarTarefa(idTarefa) {
+let isCancelled = false;
 
-  //console.log(tarefa.id);
-    //console.log(tarefa.description);
-    //console.log(tarefa.completed);
-    //console.log(tarefa.createdAt);
+async function editarTarefa(idTarefa) {
   let tarefa = listaTarefasGlobal.find(e => e.id == idTarefa);
-  Swal.fire({
+
+  let result = await Swal.fire({
     title: 'Deseja finalizar essa tarefa?',
     text: "Tem certeza?",
     icon: 'warning',
@@ -290,62 +288,46 @@ async function editarTarefa(idTarefa) {
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
     confirmButtonText: 'Sim, Tenho!'
-  }).then((result) => {
-    if (result.isConfirmed==false) {
-      Swal.fire(
-        'Deleted!',
-        'Sua Tarefa nao pode ser deletada.',
-        'error'
-      )
-      window.location.href = "tarefas.html";
-    }else {
-      Swal.fire(
-        'Deleted!',
-        'Sua Tarefa foi deletada.',
-        'success'
-      )
-    }
-    
-  })
-    
+  });
 
-    if(tarefa.completed == true){
-      tarefaJs = {
-        completed: false
-      }
-    }else {
-      tarefaJs = {
-        completed: true
-      }
-    }
-    
-  
-    let tarefaJson = JSON.stringify(tarefaJs);
-  
-    let configRequest = {
-      method: "PUT",
-      body: tarefaJson,
-      headers: {
-        'id': idTarefa,
-        'Authorization': jwt,
-        "Content-Type": "application/json"
-      }
-    }
-  
-    try { //Tentar executar uma ação/fluxo
-      let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
-      if (respostaApi.status == 201 || respostaApi.status == 200) {
-        let dados = await respostaApi.json();
-        renderizaTarefasUsuario(dados);
-        window.location='tarefas.html';
-      } else {
-        throw respostaApi;
-      }
-    } catch (error) {
-      //Exceção
-      console.log(error);
-    }
+  if (!result.isConfirmed) {
+    isCancelled = true;
+    Swal.fire(
+      'Canceleda!',
+      'Sua Tarefa não foi finalizada.',
+      'warning'
+    )
+    return;
+  }
 
+  let tarefaJs = { completed: !tarefa.completed };
+    
+  let tarefaJson = JSON.stringify(tarefaJs);
+  
+  let configRequest = {
+    method: "PUT",
+    body: tarefaJson,
+    headers: {
+      'id': idTarefa,
+      'Authorization': jwt,
+      "Content-Type": "application/json"
+    }
+  }
+  
+  try {
+    if (isCancelled) return; 
+    
+    let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
+    if (respostaApi.status == 201 || respostaApi.status == 200) {
+      let dados = await respostaApi.json();
+      renderizaTarefasUsuario(dados);
+      window.location='tarefas.html';
+    } else {
+      throw respostaApi;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function mostrarSpinner() {
