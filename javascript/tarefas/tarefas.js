@@ -54,11 +54,27 @@ closeApp.addEventListener('click', function(){
 
 novaTarefa.addEventListener('keyup', function(){
     if (novaTarefa.value.length == ' ' || novaTarefa.value == 0){
-        alert("Campo tarefas não pode ser vazio");
-        window.location.href ="tarefas.html";
+        Swal.fire(
+            'Campo tarefas não pode ser vazio!',
+            '',
+            'error'
+            )
+         
+         setTimeout(() => {
+            window.location.href ="tarefas.html";
+          }, "2000");
     }else if(validarTextoTarefas(novaTarefa.value)!== true){
-        alert("Campo tarefas só aceita textos, por favor revise");
-        window.location.href ="tarefas.html";
+        Swal.fire(
+            'Campo tarefas só aceita textos, por favor revise!',
+            '',
+            'error'
+            )
+         
+         setTimeout(() => {
+            window.location.href ="tarefas.html";
+          }, "2000");
+
+        
     }else{
         normalizaStringUsandoTrim(novaTarefa.value);
         submitTarefas.disabled= false;
