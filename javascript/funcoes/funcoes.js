@@ -197,9 +197,14 @@ async function CadastrarTarefasApi(tarefaJson) {
 function cadastraTarefasUsuario(tarefa) {
   console.log(tarefa);
   localStorage.setItem("jwt", tarefa.jwt);
-  //localStorage.setItem("cadastroTarefa", tarefa.description);
-  alert(`Tarefa Cadastrada com sucesso !`);
-  window.location.href = "tarefas.html";
+  Swal.fire(
+    `Tarefa Cadastrada com sucesso !`,
+    ``,
+    'success'  
+  )
+  setTimeout(() => {
+    window.location.href = "tarefas.html";
+  }, "3000");
 }
 
 async function buscarTarefasApi() {
@@ -231,8 +236,7 @@ function renderizaTarefasUsuario(tarefasUsuario) {
   let tarefasTerminadas = document.querySelector(".tarefas-terminadas");
 
   for (const tarefa of tarefasUsuario) {
-    console.log(tarefa.description);
-
+    
     if (tarefa.completed) {
       const date = new Date();
       let timestamp = date.toLocaleDateString();
@@ -271,53 +275,77 @@ function renderizaTarefasUsuario(tarefasUsuario) {
 
 }
 
-async function editarTarefasUsuario(idTarefa) {
+async function editarTarefa(idTarefa) {
 
-  console.log(idTarefa);
-  //Define um objeto JS para o usuário
-  let tarefaJs = {
-    completed: false
-  }
-
-  let tarefaJson = JSON.stringify(tarefaJs);
-
-  let configRequest = {
-    method: "PUT",
-    body: tarefaJson,
-    headers: {
-      'id': idTarefa,
-      'Authorization': jwt,
-      "Content-Type": "application/json"
+  //console.log(tarefa.id);
+    //console.log(tarefa.description);
+    //console.log(tarefa.completed);
+    //console.log(tarefa.createdAt);
+  let tarefa = listaTarefasGlobal.find(e => e.id == idTarefa);
+  Swal.fire({
+    title: 'Deseja finalizar essa tarefa?',
+    text: "Tem certeza?",
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Sim, Tenho!'
+  }).then((result) => {
+    if (result.isConfirmed==false) {
+      Swal.fire(
+        'Deleted!',
+        'Sua Tarefa nao pode ser deletada.',
+        'error'
+      )
+      window.location.href = "tarefas.html";
+    }else {
+      Swal.fire(
+        'Deleted!',
+        'Sua Tarefa foi deletada.',
+        'success'
+      )
     }
-  }
+    
+  })
+    
 
-  try { //Tentar executar uma ação/fluxo
-    let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
-    if (respostaApi.status == 201 || respostaApi.status == 200) {
-      let dados = await respostaApi.json();
-
-      editarTarefas(dados);
-    } else {
-      throw respostaApi;
+    if(tarefa.completed == true){
+      tarefaJs = {
+        completed: false
+      }
+    }else {
+      tarefaJs = {
+        completed: true
+      }
     }
-  } catch (error) {
-    //Exceção
-    console.log(error);
-  }
+    
+  
+    let tarefaJson = JSON.stringify(tarefaJs);
+  
+    let configRequest = {
+      method: "PUT",
+      body: tarefaJson,
+      headers: {
+        'id': idTarefa,
+        'Authorization': jwt,
+        "Content-Type": "application/json"
+      }
+    }
+  
+    try { //Tentar executar uma ação/fluxo
+      let respostaApi = await fetch(`https://todo-api.ctd.academy/v1/tasks/${idTarefa}`, configRequest);
+      if (respostaApi.status == 201 || respostaApi.status == 200) {
+        let dados = await respostaApi.json();
+        renderizaTarefasUsuario(dados);
+        window.location='tarefas.html';
+      } else {
+        throw respostaApi;
+      }
+    } catch (error) {
+      //Exceção
+      console.log(error);
+    }
 
-}
-
-function editarTarefas(idTarefa) {
-  console.log(idTarefa);
-  if (idTarefa.completed == false) {
-    idTarefa.completed == true;
-    alert('Tarefa Editada');
-  } else if (idTarefa.completed == true) {
-    idTarefa.completed = false;
-    alert('Tarefa Editada');
-  } else {
-    alert('Erro ao Editar Tarefa');
-  }
 }
 
 function mostrarSpinner() {

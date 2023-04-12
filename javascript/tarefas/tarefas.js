@@ -16,7 +16,7 @@ let sobreNome;
 onload = function(){
     //skeleton
     renderizarSkeletons(3, ".tarefas-pendentes");
-    renderizarSkeletons(2, ".tarefas-terminadas");
+    renderizarSkeletons(3, ".tarefas-terminadas");
 
     //console.log("A página carregou automáticamente.");
     jwt = sessionStorage.getItem("jwt");
@@ -108,16 +108,37 @@ function renderizaTarefasUsuario(listaTarefas) {
     listaTarefasGlobal = listaTarefas;
 
     //Elemento pai
+    let tarefasTerminadas = document.querySelector(".tarefas-terminadas");
     let tarefasPendentesDom = document.querySelector(".tarefas-pendentes");
 
     for (let tarefa of listaTarefas) {
-        console.log(tarefa);
+        //console.log(tarefa);
 
         if (tarefa.completed) {
-            console.log("Tarefa concluída");
+            const date = new Date();
+      let timestamp = date.toLocaleDateString();
+      let novaDiv = document.createElement("li");
+      novaDiv.classList.add("tarefa");
+
+      novaDiv.innerHTML = `   <div class ="done"/></div>
+                                <div class="descricao">
+                                <p class="nome">${tarefa.description}</p>
+                                <div>
+                              <button>
+                                <i id="${tarefa.id}" class="fas fa-undo-alt change"></i>
+                              <button>
+                              <button>
+                                <i id="${tarefa.id}" class="far fa-trash-alt"></i>
+                              </button>
+                              <p class="timestamp"> Finalizada em: ${timestamp}</p>
+                              </div>                              
+                              </div>                            
+                             </div>
+      `;
+      tarefasTerminadas.appendChild(novaDiv);
         } else {
             // Tarefas pendentes
-            console.log("Tarefa pendente");
+            //console.log("Tarefa pendente");
             const date = new Date();
             let timestamp = date.toLocaleDateString();
             // Criando um novo item <li>
